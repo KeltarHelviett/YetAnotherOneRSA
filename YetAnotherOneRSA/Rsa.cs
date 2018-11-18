@@ -13,10 +13,27 @@ namespace YetAnotherOneRSA
             (_n, _e, _d) = (n, e, d);
         }
 
+        public Rsa() { }
+
+        public void Decrypt(BinaryReader reader, BinaryWriter writer)
+        {
+            var len = reader.BaseStream.Length;
+            var pos = reader.BaseStream.Position;
+            var zero = new byte[] { 0x00 };
+            while (pos < len)
+            {
+                var bytes = reader.ReadBytes(32);
+                var c = new BigInteger(bytes);
+                bytes = BigInteger.ModPow(c, _d, _n).ToByteArray();
+                writer.Write(bytes);
+                pos += 32;
+            }
+        }
+
         public void Encrypt(BinaryReader reader, BinaryWriter writer)
         {
             var len = reader.BaseStream.Length;
-            var pos = 0;
+            var pos = reader.BaseStream.Position;
             var zero = new byte[] {0x00};
             writer.Write(Extend(_d.ToByteArray()));
             writer.Write(Extend(_n.ToByteArray()));
@@ -30,6 +47,8 @@ namespace YetAnotherOneRSA
                 writer.Write(bytes);
                 pos += 8;
             }
+            writer.Close();
+            reader.Close();
         }
 
         public byte[] Extend(byte[] bytes, int to = 32, byte with = 0x00)
