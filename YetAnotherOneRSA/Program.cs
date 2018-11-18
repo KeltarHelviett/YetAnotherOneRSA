@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace YetAnotherOneRSA
 {
@@ -10,6 +6,7 @@ namespace YetAnotherOneRSA
     {
         static void Main(string[] args)
         {
+            var (n, phi, e, d) = KeyGenerator.GetRsaKeys();
         }
     }
 }
