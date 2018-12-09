@@ -4,38 +4,42 @@ namespace YetAnotherOneRSA
 {
     public class DiffieHellman
     {
-        private BigInteger a, b, K;
+        private BigInteger a, b;
 
         public BigInteger g, p, A, B;
 
-        public BigInteger GiveA()
+        public (BigInteger, BigInteger, BigInteger) AlicePass()
         {
-            p = NumberTheoryUtils.RandomPrime();
-            g = NumberTheoryUtils.GetGroupGenerator(p);
-            a = NumberTheoryUtils.RandomNumber();
+            p = NumberTheoryUtils.RandomPrimeInRange(10, 10000000000000000);
+            g = NumberTheoryUtils.GetGroupGenerator(p, true);
+            a = NumberTheoryUtils.RandomIntegerInRange(10, 10000000000000000);
             A = BigInteger.ModPow(g, a, p);
-            return A;
+            return (g, p, A);
         }
 
-        public void TakeB(BigInteger B)
+        public void AliceSetB(BigInteger B)
         {
             this.B = B;
-            K = BigInteger.ModPow(B, a, p);
         }
 
-        public void TakeA(BigInteger A, BigInteger g, BigInteger p)
+        public BigInteger BobPass((BigInteger, BigInteger, BigInteger) gpA)
         {
-            this.g = g;
-            this.p = p;
-            this.A = A;
-            b = NumberTheoryUtils.RandomNumber();
+            this.g = gpA.Item1;
+            this.p = gpA.Item2;
+            this.A = gpA.Item3;
+            b = NumberTheoryUtils.RandomIntegerInRange(10, 10000000000000000);
             B = BigInteger.ModPow(g, b, p);
-            K = BigInteger.ModPow(A, b, p);
+            return B;
         }
 
-        public BigInteger GiveB()
+        public BigInteger BobCulcK()
         {
-            return B;
+            return BigInteger.ModPow(A, b, p);
+        }
+
+        public BigInteger AliceCulcK()
+        {
+            return BigInteger.ModPow(B, a, p);
         }
     }
 }
