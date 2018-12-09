@@ -60,6 +60,7 @@
     <Compile Include="BigIntegerExtensions.cs" />
     <Compile Include="BytesExtensions.cs" />
     <Compile Include="KeyGenerator.cs" />
+    <Compile Include="NumberTheoryUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rsa.cs" />
