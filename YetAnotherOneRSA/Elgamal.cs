@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
@@ -24,7 +25,7 @@ namespace YetAnotherOneRSA
             y = BigInteger.ModPow(g, x, p);
         }
 
-        public (BigInteger, BigInteger) Sign(string M)
+        public (BigInteger, BigInteger) Sign(byte[] M)
         {
             var m = GetDigest(M);
             var k = NumberTheoryUtils.RandomPrimeInRange(1, p - 1);
@@ -34,7 +35,7 @@ namespace YetAnotherOneRSA
             return (r, s);
         }
 
-        public bool Check(string M, (BigInteger, BigInteger) sign)
+        public bool Check(byte[] M, (BigInteger, BigInteger) sign)
         {
             var (r, s) = sign;
             if (0 >= r || r >= p || 0 >= s || s >= p - 1)
@@ -43,19 +44,19 @@ namespace YetAnotherOneRSA
             return (BigInteger.ModPow(y, r, p) * BigInteger.ModPow(r, s, p)) % p == BigInteger.ModPow(g, m, p);
         }
 
-        private BigInteger GetDigest(string M)
+        private BigInteger GetDigest(byte[] M)
         {
             var sha = new SHA256Managed();
-            var bytes = Encoding.UTF8.GetBytes(M);
-            var hash = sha.ComputeHash(bytes);
+            var hash = sha.ComputeHash(M);
             return new BigInteger(hash.Extend());
         }
 
-        public byte[] GetMessagePack(string M)
+        public byte[] GetMessagePack(byte[] M)
         {
             var m = GetDigest(M);
             var (r, s) = Sign(M);
-
+            if (!Check(M, (r, s)))
+                throw new Exception("SHIT");
             var pack = p.ToByteArray().ExtendTo().Concat(
                 g.ToByteArray().ExtendTo().Concat(
                     y.ToByteArray().ExtendTo().Concat(

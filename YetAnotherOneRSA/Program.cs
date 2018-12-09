@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace YetAnotherOneRSA
 {
@@ -17,8 +18,8 @@ namespace YetAnotherOneRSA
 
             var e = new Elgamal();
             string M = "asdasd";
-            var sign = e.Sign(M);
-            var pack = e.GetMessagePack(M);
+            var bytes = Encoding.UTF8.GetBytes(M);
+            var pack = e.GetMessagePack(bytes);
             var writer = new BinaryWriter(File.Open("tests/tt.txt", FileMode.Open));
             writer.Write(pack);
             //Test();
