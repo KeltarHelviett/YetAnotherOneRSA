@@ -59,7 +59,7 @@ namespace YetAnotherOneRSA
         {
             if (isModulusPrime)
                 return BigInteger.ModPow(a, m - 2, m);
-           
+
 
             if (isCoPrime)
             {
@@ -92,6 +92,13 @@ namespace YetAnotherOneRSA
                 if ((a * x) % m == 1)
                     return x;
             return 1;
+        }
+
+        public static BigInteger EuclidianMod(this BigInteger a, BigInteger m)
+        {
+            var r = a % m;
+            if (r < 0) r += BigInteger.Abs(m);
+            return r;
         }
     }
 }

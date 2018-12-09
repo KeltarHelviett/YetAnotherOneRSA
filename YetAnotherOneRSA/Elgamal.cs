@@ -28,11 +28,7 @@ namespace YetAnotherOneRSA
             var m = GetDigest(M);
             var k = NumberTheoryUtils.RandomPrimeInRange(1, p - 1);
             var r = BigInteger.ModPow(g, k, p);
-            var s = ((m - x * r) * k.ModInverse(p - 1)) % (p - 1);
-            if (s < 0)
-            {
-                s += (p - 1);
-            }
+            var s = ((m - x * r) * k.ModInverse(p - 1)).EuclidianMod(p - 1);
             Check(M, (r, s));
             return (r, s);
         }
