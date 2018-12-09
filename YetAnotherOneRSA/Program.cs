@@ -18,8 +18,9 @@ namespace YetAnotherOneRSA
             var e = new Elgamal();
             string M = "asdasd";
             var sign = e.Sign(M);
-            Console.WriteLine(e.GetMessangePack(M).ToByteArray().Length);
-
+            var pack = e.GetMessagePack(M);
+            var writer = new BinaryWriter(File.Open("tests/tt.txt", FileMode.Open));
+            writer.Write(pack);
             //Test();
             //PaddingTest();
         }

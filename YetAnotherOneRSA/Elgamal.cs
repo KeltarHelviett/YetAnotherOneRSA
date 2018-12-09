@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -50,16 +51,20 @@ namespace YetAnotherOneRSA
             return new BigInteger(hash.Extend());
         }
 
-        public BigInteger GetMessangePack(string M)
+        public byte[] GetMessagePack(string M)
         {
             var m = GetDigest(M);
             var (r, s) = Sign(M);
-            var pack = p;
-            pack = pack * BigInteger.Pow(10, g.Length()) + g;
-            pack = pack * BigInteger.Pow(10, y.Length()) + y;
-            pack = pack * BigInteger.Pow(10, r.Length()) + r;
-            pack = pack * BigInteger.Pow(10, s.Length()) + s;
-            pack = pack * BigInteger.Pow(10, m.Length()) + m;
+
+            var pack = p.ToByteArray().ExtendTo().Concat(
+                g.ToByteArray().ExtendTo().Concat(
+                    y.ToByteArray().ExtendTo().Concat(
+                            r.ToByteArray().ExtendTo().Concat(
+                                s.ToByteArray().ExtendTo()
+                        )
+                    )
+                )
+            ).Concat(m.ToByteArray().Trim()).ToArray();
             return pack;
         }
     }
