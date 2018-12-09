@@ -20,5 +20,14 @@ namespace YetAnotherOneRSA
             var d = e.ModInverse(phi, isCoPrime: true);
             return (n, e, d);
         }
+
+        public static (BigInteger, BigInteger, BigInteger, BigInteger) GetElgamalKeys()
+        {
+            var p = NumberTheoryUtils.RandomPrime(1);
+            var g = NumberTheoryUtils.GetGroupGenerator(p, isPrime: true);
+            var x = NumberTheoryUtils.RandomIntegerInRange(1, p);
+            var y = BigInteger.ModPow(g, x, p);
+            return (p, g, x, y);
+        }
     }
 }

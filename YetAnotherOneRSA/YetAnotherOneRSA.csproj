@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="BigIntegerExtensions.cs" />
     <Compile Include="BytesExtensions.cs" />
+    <Compile Include="DiffieHellman.cs" />
+    <Compile Include="Elgamal.cs" />
     <Compile Include="KeyGenerator.cs" />
     <Compile Include="NumberTheoryUtils.cs" />
     <Compile Include="Program.cs" />

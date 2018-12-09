@@ -10,8 +10,12 @@ namespace YetAnotherOneRSA
     {
         static void Main(string[] args)
         {
-            Test();
-            PaddingTest();
+            var e = new Elgamal();
+            string M = "asdasd";
+            var sign = e.Sign(M);
+            Console.WriteLine(e.Check(M, sign));
+            //Test();
+            //PaddingTest();
         }
 
         public static void Test()

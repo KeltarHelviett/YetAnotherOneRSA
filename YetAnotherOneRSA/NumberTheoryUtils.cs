@@ -25,7 +25,7 @@ namespace YetAnotherOneRSA
                 Rng.GetBytes(bytes);
                 res = new BigInteger(bytes.Extend());
             } while (!res.IsProbablePrime());
-            return new BigInteger(bytes);
+            return res;
         }
 
         public static BigInteger RandomIntegerInRange(BigInteger lower, BigInteger upper)
