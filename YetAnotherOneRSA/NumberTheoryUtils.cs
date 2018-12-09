@@ -9,6 +9,13 @@ namespace YetAnotherOneRSA
     {
         private static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
 
+        public static BigInteger RandomNumber(long nbytes = 16)
+        {
+            var bytes = new byte[nbytes];
+            Rng.GetBytes(bytes);
+            return new BigInteger(bytes.Extend());
+        }
+
         public static BigInteger RandomPrime(long nbytes = 16)
         {
             var bytes = new byte[nbytes];
@@ -16,7 +23,7 @@ namespace YetAnotherOneRSA
             do
             {
                 Rng.GetBytes(bytes);
-                res = new BigInteger(bytes);
+                res = new BigInteger(bytes.Extend());
             } while (!res.IsProbablePrime());
             return new BigInteger(bytes);
         }
