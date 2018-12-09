@@ -19,7 +19,7 @@ namespace YetAnotherOneRSA
                 e = RandomIntegerInRange(2, phi);
             }
 
-            var d = e.ModInverse(phi);
+            var d = e.ModInverse(phi, isCoPrime: true);
             return (n, e, d);
         }
 

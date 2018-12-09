@@ -11,7 +11,7 @@ namespace YetAnotherOneRSA
         static void Main(string[] args)
         {
             Test();
-            PaddingTest();
+            //PaddingTest();
         }
 
         public static void Test()

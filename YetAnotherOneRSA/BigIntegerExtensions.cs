@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using System.Security.Cryptography;
 
 namespace YetAnotherOneRSA
@@ -54,30 +55,43 @@ namespace YetAnotherOneRSA
             return true;
         }
 
-        public static BigInteger ModInverse(this BigInteger a, BigInteger m)
+        public static BigInteger ModInverse(this BigInteger a, BigInteger m, bool isModulusPrime = false, bool isCoPrime = false)
         {
-            var m0 = m;
-            BigInteger y = 0, x = 1;
+            if (isModulusPrime)
+                return BigInteger.ModPow(a, m - 2, m);
+           
 
-            if (m == 1)
-                return 0;
-
-            while (a > 1)
+            if (isCoPrime)
             {
-                var q = a / m;
-                var t = m;
-                m = a % m;
-                a = t;
-                t = y;
- 
-                y = x - q * y;
-                x = t;
-            }
-            
-            if (x < 0)
-                x += m0;
+                var m0 = m;
+                BigInteger y = 0, x = 1;
 
-            return x;
+                if (m == 1)
+                    return 0;
+
+                while (a > 1)
+                {
+                    var q = a / m;
+                    var t = m;
+                    m = a % m;
+                    a = t;
+                    t = y;
+
+                    y = x - q * y;
+                    x = t;
+                }
+
+                if (x < 0)
+                    x += m0;
+
+                return x;
+            }
+
+            a = a % m;
+            for (BigInteger x = 1; x < m; x++)
+                if ((a * x) % m == 1)
+                    return x;
+            return 1;
         }
     }
 }
