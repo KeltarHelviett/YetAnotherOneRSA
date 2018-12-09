@@ -28,6 +28,16 @@ namespace YetAnotherOneRSA
             return res;
         }
 
+        public static BigInteger RandomPrimeInRange(BigInteger lower, BigInteger upper)
+        {
+            BigInteger res;
+            do
+            {
+                res = RandomIntegerInRange(lower, upper);
+            } while (!res.IsProbablePrime());
+            return res;
+        }
+
         public static BigInteger RandomIntegerInRange(BigInteger lower, BigInteger upper)
         {
             var bytes = upper.ToByteArray();
