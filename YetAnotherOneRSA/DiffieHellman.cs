@@ -24,9 +24,7 @@ namespace YetAnotherOneRSA
 
         public BigInteger BobPass((BigInteger, BigInteger, BigInteger) gpA)
         {
-            this.g = gpA.Item1;
-            this.p = gpA.Item2;
-            this.A = gpA.Item3;
+            (g, p, A) = gpA;
             b = NumberTheoryUtils.RandomIntegerInRange(10, 10000000000000000);
             B = BigInteger.ModPow(g, b, p);
             return B;
