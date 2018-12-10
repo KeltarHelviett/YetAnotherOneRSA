@@ -33,11 +33,16 @@ namespace YetAnotherOneRSA
 
         public static byte[] Xor(this byte[] a, byte[] b)
         {
-            if (a.Length != b.Length)
-                throw new Exception("Bad xor");
             var c = new byte[a.Length];
-            for (var i = 0; i < a.Length; ++i)
-                c[i] = (byte) (a[i] ^ b[i]);
+            int i = 0;
+            while (i < a.Length) {
+                int j = 0;
+                while (j < b.Length && i < a.Length)
+                {
+                    c[i] = (byte)(a[i] ^ b[j]);
+                    j++; i++;
+                }
+            }
 
             return c;
         }

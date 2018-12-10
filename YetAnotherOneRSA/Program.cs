@@ -20,6 +20,7 @@ namespace YetAnotherOneRSA
             string M = "asdasd";
             var bytes = Encoding.UTF8.GetBytes(M);
             var pack = e.GetMessagePack(bytes);
+
             var writer = new BinaryWriter(File.Open("tests/tt.txt", FileMode.Open));
             writer.Write(pack);
             //Test();
