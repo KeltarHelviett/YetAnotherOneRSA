@@ -100,5 +100,10 @@ namespace YetAnotherOneRSA
             if (r < 0) r += BigInteger.Abs(m);
             return r;
         }
+
+        public static int Length(this BigInteger a)
+        {
+            return a.ToString().Length;
+        }
     }
 }

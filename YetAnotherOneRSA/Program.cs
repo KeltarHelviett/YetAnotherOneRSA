@@ -15,12 +15,11 @@ namespace YetAnotherOneRSA
             var bK = dh.BobCulcK();
             var aK = dh.AliceCulcK();
 
-            Console.WriteLine(bK.ToString() + " " + aK.ToString());
+            var e = new Elgamal();
+            string M = "asdasd";
+            var sign = e.Sign(M);
+            Console.WriteLine(e.GetMessangePack(M).ToByteArray().Length);
 
-            //var e = new Elgamal();
-            //string M = "asdasd";
-            //var sign = e.Sign(M);
-            //Console.WriteLine(e.Check(M, sign));
             //Test();
             //PaddingTest();
         }

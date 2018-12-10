@@ -49,5 +49,18 @@ namespace YetAnotherOneRSA
             var hash = sha.ComputeHash(bytes);
             return new BigInteger(hash.Extend());
         }
+
+        public BigInteger GetMessangePack(string M)
+        {
+            var m = GetDigest(M);
+            var (r, s) = Sign(M);
+            var pack = p;
+            pack = pack * BigInteger.Pow(10, g.Length()) + g;
+            pack = pack * BigInteger.Pow(10, y.Length()) + y;
+            pack = pack * BigInteger.Pow(10, r.Length()) + r;
+            pack = pack * BigInteger.Pow(10, s.Length()) + s;
+            pack = pack * BigInteger.Pow(10, m.Length()) + m;
+            return pack;
+        }
     }
 }
