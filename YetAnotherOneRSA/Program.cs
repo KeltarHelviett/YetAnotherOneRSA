@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace YetAnotherOneRSA
@@ -54,6 +55,32 @@ namespace YetAnotherOneRSA
             }
         }
 
+        public static void Alice()
+        {
+            var reader = new BinaryReader(File.Open($"tests/tt.txt", FileMode.Open));
+            var writer = new BinaryWriter(File.Open($"tests/ttt.txt", FileMode.Create));
+            var (n, e, d) = KeyGenerator.GetRsaKeys();
+            var rsa = new Rsa(n, e, d);
+            rsa.Encrypt(reader, writer);
+            reader = new BinaryReader(File.Open($"tests/ttt.txt", FileMode.Open));
+            var M = reader.ReadBytes((int)reader.BaseStream.Length);
+            var dh = new DiffieHellman();
+            var (g, p, A) = dh.AlicePass();
+            Console.WriteLine(g + " " + p + " " + A);
+            var B = BigInteger.Parse(Console.ReadLine());
+            dh.AliceSetB(B);
+            var K = dh.AliceCulcK();
+            var elgamal = new Elgamal();
+            Console.WriteLine(elgamal.g + " " + elgamal.p + " " + elgamal.y);
+            var sha = new SHA256Managed();
+            var m = sha.ComputeHash(M);
+            var pack = elgamal.GetMessagePack(m);
+            var res = pack.Xor(K.ToByteArray());
+            writer = new BinaryWriter(File.Open($"tests/tttt.txt", FileMode.Create));
+            writer.Write(res);
+            writer.Close();
+        }
+
         public static void Bob()
         {
             var dh = new DiffieHellman();
@@ -68,7 +95,6 @@ namespace YetAnotherOneRSA
             var k = dh.BobCulcK();
             Console.Write(B.ToString());
 
-            
             input = Console.ReadLine();
             var gpy = input.Split(' ');
             g = BigInteger.Parse(gpy[0]);
@@ -85,8 +111,6 @@ namespace YetAnotherOneRSA
             var m = ans.Skip(32 * 5).ToArray();
             var f = elg.Check(m, (new BigInteger(r), new BigInteger(s)));
             Console.Write(f);
-
-
         }
 
 
