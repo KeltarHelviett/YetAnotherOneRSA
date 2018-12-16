@@ -8,9 +8,9 @@ namespace YetAnotherOneRSA
 {
     public class Elgamal
     {
-        private BigInteger p, g, x;
+        private BigInteger x;
 
-        public BigInteger y;
+        public BigInteger y, p, g;
 
         public Elgamal()
         {
