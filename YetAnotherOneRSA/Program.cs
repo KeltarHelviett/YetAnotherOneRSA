@@ -11,20 +11,7 @@ namespace YetAnotherOneRSA
     {
         static void Main(string[] args)
         {
-            var dh = new DiffieHellman();
-            dh.AliceSetB(dh.BobPass(dh.AlicePass()));
-            var bK = dh.BobCulcK();
-            var aK = dh.AliceCulcK();
-
-            var e = new Elgamal();
-            string M = "asdasd";
-            var bytes = Encoding.UTF8.GetBytes(M);
-            var pack = e.GetMessagePack(bytes);
-
-            var writer = new BinaryWriter(File.Open("tests/tt.txt", FileMode.Open));
-            writer.Write(pack);
-            //Test();
-            //PaddingTest();
+            Bob();
         }
 
         public static void Test()
@@ -66,5 +53,42 @@ namespace YetAnotherOneRSA
                 rsa.Decrypt(reader, writer);
             }
         }
+
+        public static void Bob()
+        {
+            var dh = new DiffieHellman();
+
+            var input = Console.ReadLine();
+            var gpA = input.Split(' ');
+            var g = BigInteger.Parse(gpA[0]);
+            var p = BigInteger.Parse(gpA[1]);
+            var A = BigInteger.Parse(gpA[2]);
+
+            var B = dh.BobPass((g, p, A));
+            var k = dh.BobCulcK();
+            Console.Write(B.ToString());
+
+            
+            input = Console.ReadLine();
+            var gpy = input.Split(' ');
+            g = BigInteger.Parse(gpy[0]);
+            p = BigInteger.Parse(gpy[1]);
+            var y = BigInteger.Parse(gpy[2]);
+
+            var elg = new Elgamal(g, p, y);
+
+            var reader = new BinaryReader(File.Open($"tests/tttt.txt", FileMode.Open));
+            var bytes = reader.ReadBytes((int)reader.BaseStream.Length);
+            var ans = bytes.Xor(k.ToByteArray());
+            var r = ans.Skip(32 * 3).Take(32).ToArray();
+            var s = ans.Skip(32 * 4).Take(32).ToArray();
+            var m = ans.Skip(32 * 5).ToArray();
+            var f = elg.Check(m, (new BigInteger(r), new BigInteger(s)));
+            Console.Write(f);
+
+
+        }
+
+
     }
 }

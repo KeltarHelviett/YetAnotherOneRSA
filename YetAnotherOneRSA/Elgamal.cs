@@ -17,13 +17,20 @@ namespace YetAnotherOneRSA
             (p, g, x, y) = KeyGenerator.GetElgamalKeys();
         }
 
-        public Elgamal(BigInteger p, BigInteger g, BigInteger x)
+        //public Elgamal(BigInteger p, BigInteger g, BigInteger x)
+        //{
+        //    this.p = p;
+        //    this.g = g;
+        //    this.x = x;
+        //    y = BigInteger.ModPow(g, x, p);
+        //}
+
+        public Elgamal(BigInteger g, BigInteger p, BigInteger y)
         {
             this.p = p;
             this.g = g;
-            this.x = x;
-            y = BigInteger.ModPow(g, x, p);
-        }
+            this.y = y;
+       }
 
         public (BigInteger, BigInteger) Sign(byte[] M)
         {

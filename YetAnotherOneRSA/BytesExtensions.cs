@@ -35,13 +35,12 @@ namespace YetAnotherOneRSA
         {
             var c = new byte[a.Length];
             int i = 0;
-            while (i < a.Length) {
-                int j = 0;
-                while (j < b.Length && i < a.Length)
-                {
-                    c[i] = (byte)(a[i] ^ b[j]);
-                    j++; i++;
-                }
+            int j = 0;
+            while (i < a.Length)
+            {
+                c[i] = (byte)(a[i] ^ b[j]);
+                ++i;
+                j = (j + 1) % b.Length;
             }
 
             return c;
